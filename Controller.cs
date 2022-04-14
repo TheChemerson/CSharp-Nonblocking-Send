@@ -12,6 +12,7 @@ namespace PublisherNonBlocking {
         private Publisher publisher;
         private IList<IMessage> messageList;
         private int lastSent = -1;
+        private int blockedCount;
 
         public Controller(IConfiguration config) {
             settings = config.GetRequiredSection("Settings").Get<Settings>();
@@ -81,6 +82,7 @@ namespace PublisherNonBlocking {
                     if (log.IsDebugEnabled) {
                         log.Debug($"{returnCode} - last sent = {lastSent}");
                     }
+                    blockedCount++;
                     break;
                 }
                 lastSent = i;
@@ -88,7 +90,7 @@ namespace PublisherNonBlocking {
 
             if (log.IsInfoEnabled) {
                 if (lastSent+1 == messageList.Count) {
-                    log.Info($"All messages sent.");
+                    log.Info($"All messages sent.  Blocked {blockedCount} time(s).");
                 }
             }
         }
