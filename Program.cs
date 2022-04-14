@@ -30,10 +30,11 @@ namespace PublisherNonBlocking {
                 var controller = serviceScope.ServiceProvider.GetRequiredService<Controller>();
                 controller.Init();
                 controller.SendMessageList();
+
+                // keep the controller alive until it is time to go home
                 while (Console.ReadLine().ToLower() != "exit") {
                     Thread.Sleep(1000);
                 }
-
             }
 
             return 0;
